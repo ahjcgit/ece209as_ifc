@@ -1,0 +1,72 @@
+from __future__ import annotations
+
+import json
+import os
+import sys
+from pathlib import Path
+
+# Ensure local package import works when running as a script.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from ifc_agent.agent import WebAgent
+from ifc_agent.labels import Lattice, make_label
+from ifc_agent.llm import OllamaLLM, OpenAICompatibleLLM
+from ifc_agent.policy import Policy
+
+
+def _load_config(path: Path) -> dict:
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def _build_policy(config: dict) -> tuple[Lattice, Policy]:
+    lattice = Lattice(config["lattice"])
+    user_output_max = make_label(
+        config["user_output_max"]["level"],
+        config["user_output_max"].get("categories", []),
+    )
+    external_allowed = [
+        make_label(item["level"], item.get("categories", []))
+        for item in config["external_llm_allowed"]
+    ]
+    policy = Policy(lattice, external_allowed, user_output_max)
+    return lattice, policy
+
+
+def _build_llm(config: dict):
+    if os.getenv("OPENAI_API_KEY"):
+        params = config["openai_compatible"]
+        return OpenAICompatibleLLM(
+            model=params["model"],
+            base_url=params["base_url"],
+        )
+    params = config["ollama"]
+    return OllamaLLM(model=params["model"], base_url=params["base_url"])
+
+
+def main() -> int:
+    if len(sys.argv) < 3:
+        print("Usage: python scripts/run_agent.py <config.json> <url> [url...]")
+        return 1
+
+    config_path = Path(sys.argv[1])
+    urls = sys.argv[2:]
+    config = _load_config(config_path)
+    lattice, policy = _build_policy(config)
+    llm = _build_llm(config)
+
+    agent = WebAgent(lattice=lattice, policy=policy, llm=llm)
+
+    user_prompt = "Summarize the main points."
+    user_label = make_label("Confidential", ["PII"])
+    result = agent.run(user_prompt, user_label, urls)
+
+    print(result.text)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+

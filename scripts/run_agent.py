@@ -14,6 +14,7 @@ from ifc_agent.agent import WebAgent
 from ifc_agent.labels import Lattice, make_label
 from ifc_agent.llm import OllamaLLM, OpenAICompatibleLLM
 from ifc_agent.policy import Policy
+from ifc_agent.tools import AgentTools
 
 
 def _load_config(path: Path) -> dict:
@@ -56,8 +57,16 @@ def main() -> int:
     config = _load_config(config_path)
     lattice, policy = _build_policy(config)
     llm = _build_llm(config)
+    tool_cfg = config.get("tools", {})
+    tools = AgentTools(
+        lattice=lattice,
+        storage_path=tool_cfg.get("storage_path", "data/store.json"),
+        trusted_domains=tool_cfg.get("trusted_domains", []),
+        blocked_domains=tool_cfg.get("blocked_domains", []),
+        user_agent=tool_cfg.get("user_agent", "IFC-Agent/0.2"),
+    )
 
-    agent = WebAgent(lattice=lattice, policy=policy, llm=llm)
+    agent = WebAgent(lattice=lattice, policy=policy, llm=llm, tools=tools)
 
     user_prompt = "Summarize the main points."
     user_label = make_label("Confidential", ["PII"])
@@ -69,4 +78,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

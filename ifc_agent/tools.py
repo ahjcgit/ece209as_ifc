@@ -1,36 +1,86 @@
 from __future__ import annotations
 
-import re
-import urllib.request
 from dataclasses import dataclass
+from typing import Iterable
 
-from .labels import Label
+from .labels import Label, Lattice
+from .parser import TrustAssessment, TrustParser
+from .retrieval import RetrievedDocument, Retriever
+from .scraper import WebScraper
+from .storage import JSONStorage
 
 
 @dataclass(frozen=True)
-class ToolResult:
-    text: str
+class ScrapeStoreResult:
+    document_id: str
+    url: str
     label: Label
+    score: float
+    signals: dict[str, float | str | bool | int]
 
 
-def _strip_html(html: str) -> str:
-    text = re.sub(r"<script.*?>.*?</script>", " ", html, flags=re.S | re.I)
-    text = re.sub(r"<style.*?>.*?</style>", " ", text, flags=re.S | re.I)
-    text = re.sub(r"<[^>]+>", " ", text)
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
+@dataclass(frozen=True)
+class RetrieveResult:
+    documents: list[RetrievedDocument]
 
 
-class WebFetcher:
-    def __init__(self, user_agent: str = "IFC-Agent/0.1") -> None:
-        self._user_agent = user_agent
-
-    def fetch(self, url: str, label: Label) -> ToolResult:
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": self._user_agent},
+class AgentTools:
+    def __init__(
+        self,
+        lattice: Lattice,
+        storage_path: str,
+        trusted_domains: Iterable[str] | None = None,
+        blocked_domains: Iterable[str] | None = None,
+        user_agent: str = "IFC-Agent/0.2",
+    ) -> None:
+        self._scraper = WebScraper(user_agent=user_agent)
+        self._parser = TrustParser(
+            trusted_domains=trusted_domains,
+            blocked_domains=blocked_domains,
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            html = resp.read().decode("utf-8", errors="replace")
-        return ToolResult(text=_strip_html(html), label=label)
+        self._storage = JSONStorage(storage_path)
+        self._retriever = Retriever(lattice)
 
+    def scrape_parse_store(
+        self,
+        urls: Iterable[str],
+        scrape_label: Label | None = None,
+    ) -> list[ScrapeStoreResult]:
+        stored: list[ScrapeStoreResult] = []
+        for url in urls:
+            content = self._scraper.scrape(url)
+            assessment = self._parser.assess(url, content.clean_text, content.raw_html)
+            if scrape_label is not None:
+                assessment = TrustAssessment(
+                    score=assessment.score,
+                    label=scrape_label,
+                    signals=assessment.signals,
+                )
+            document, trust = self._storage.store_document(content, assessment)
+            stored.append(
+                ScrapeStoreResult(
+                    document_id=document.id,
+                    url=document.url,
+                    label=trust.label,
+                    score=trust.score,
+                    signals=trust.signals,
+                )
+            )
+        return stored
+
+    def retrieve_by_query(
+        self,
+        query: str,
+        label_cap: Label | None = None,
+        top_k: int = 3,
+    ) -> RetrieveResult:
+        documents = self._storage.load_documents()
+        assessments = self._storage.load_trust_assessments()
+        retrieved = self._retriever.retrieve(
+            query=query,
+            documents=documents,
+            assessments=assessments,
+            label_cap=label_cap,
+            top_k=top_k,
+        )
+        return RetrieveResult(documents=retrieved)

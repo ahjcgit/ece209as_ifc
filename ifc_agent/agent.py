@@ -6,7 +6,7 @@ from typing import Iterable
 from .labels import Label, Lattice, join_labels, make_label
 from .llm import BaseLLM, LLMResponse
 from .policy import Policy
-from .tools import ToolResult, WebFetcher
+from .tools import AgentTools, RetrieveResult
 
 
 @dataclass(frozen=True)
@@ -21,12 +21,12 @@ class WebAgent:
         lattice: Lattice,
         policy: Policy,
         llm: BaseLLM,
-        fetcher: WebFetcher | None = None,
+        tools: AgentTools,
     ) -> None:
         self._lattice = lattice
         self._policy = policy
         self._llm = llm
-        self._fetcher = fetcher or WebFetcher()
+        self._tools = tools
 
     def run(
         self,
@@ -36,15 +36,22 @@ class WebAgent:
         scrape_label: Label | None = None,
     ) -> AgentResult:
         scrape_label = scrape_label or make_label(user_label.level, user_label.categories)
-
-        tool_results: list[ToolResult] = []
-        for url in urls:
-            tool_results.append(self._fetcher.fetch(url, scrape_label))
+        self._tools.scrape_parse_store(
+            urls=urls,
+            scrape_label=scrape_label,
+        )
+        retrieved: RetrieveResult = self._tools.retrieve_by_query(
+            query=user_prompt,
+            label_cap=user_label,
+        )
+        if not retrieved.documents:
+            raise ValueError("No retrievable documents matched the query under IFC constraints.")
 
         combined_label = join_labels(
-            self._lattice, [user_label] + [res.label for res in tool_results]
+            self._lattice,
+            [user_label] + [doc.label for doc in retrieved.documents],
         )
-        summary_prompt = self._build_prompt(user_prompt, tool_results)
+        summary_prompt = self._build_prompt(user_prompt, retrieved)
 
         if self._llm.is_external:
             decision = self._policy.can_send_to_external_llm(combined_label)
@@ -60,10 +67,10 @@ class WebAgent:
         return AgentResult(text=llm_response.text, label=llm_response.label)
 
     @staticmethod
-    def _build_prompt(user_prompt: str, tool_results: Iterable[ToolResult]) -> str:
+    def _build_prompt(user_prompt: str, retrieved: RetrieveResult) -> str:
         snippets = "\n\n".join(
-            f"[Source {idx + 1}]\n{result.text[:2000]}"
-            for idx, result in enumerate(tool_results)
+            f"[Source {idx + 1}] ({document.url})\n{document.text_snippet[:2000]}"
+            for idx, document in enumerate(retrieved.documents)
         )
         return (
             "You are a cautious web agent. Use only the provided sources.\n\n"
@@ -71,4 +78,3 @@ class WebAgent:
             f"Sources:\n{snippets}\n\n"
             "Provide a concise answer and cite sources by number."
         )
-

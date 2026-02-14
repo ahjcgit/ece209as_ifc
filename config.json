@@ -15,6 +15,14 @@
   "openai_compatible": {
     "model": "gpt-4o-mini",
     "base_url": "https://api.openai.com"
+  },
+  "tools": {
+    "storage_path": "data/store.json",
+    "trusted_domains": [
+      "example.com",
+      "wikipedia.org"
+    ],
+    "blocked_domains": [],
+    "user_agent": "IFC-Agent/0.2"
   }
 }
-

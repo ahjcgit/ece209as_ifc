@@ -28,8 +28,11 @@ class WebScraper:
 
     def scrape(self, url: str) -> ScrapedContent:
         req = urllib.request.Request(url, headers={"User-Agent": self._user_agent})
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            raw_html = resp.read().decode("utf-8", errors="replace")
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                raw_html = resp.read().decode("utf-8", errors="replace")
+        except Exception as e:
+            raise RuntimeError(f"Failed to scrape {url}: {e}")
         return ScrapedContent(
             url=url,
             fetched_at=datetime.now(timezone.utc).isoformat(),

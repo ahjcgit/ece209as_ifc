@@ -45,7 +45,10 @@ class WebAgent:
             label_cap=user_label,
         )
         if not retrieved.documents:
-            raise ValueError("No retrievable documents matched the query under IFC constraints.")
+            return AgentResult(
+                text="No relevant or authorized documents were found for this query.",
+                label=user_label,
+            )
 
         combined_label = join_labels(
             self._lattice,

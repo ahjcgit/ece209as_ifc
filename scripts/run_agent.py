@@ -1,4 +1,5 @@
 from __future__ import annotations
+from urllib.parse import urlparse
 
 import json
 import os
@@ -54,10 +55,19 @@ def main() -> int:
 
     config_path = Path(sys.argv[1])
     urls = sys.argv[2:]
+
+    from urllib.parse import urlparse
+    for url in urls:
+        parsed = urlparse(url)
+        if not parsed.scheme or not parsed.netloc:
+            print(f"[ERROR] Invalid URL format: {url}")
+            return 1
+
     config = _load_config(config_path)
     lattice, policy = _build_policy(config)
     llm = _build_llm(config)
     tool_cfg = config.get("tools", {})
+
     tools = AgentTools(
         lattice=lattice,
         storage_path=tool_cfg.get("storage_path", "data/store.json"),
@@ -70,9 +80,13 @@ def main() -> int:
 
     user_prompt = "Summarize the main points."
     user_label = make_label("Confidential", ["PII"])
-    result = agent.run(user_prompt, user_label, urls)
 
-    print(result.text)
+    try:
+        result = agent.run(user_prompt, user_label, urls)
+        print(result.text)
+    except Exception as e:
+        print(f"[ERROR] {e}")
+
     return 0
 
 

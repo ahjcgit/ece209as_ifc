@@ -79,7 +79,14 @@ def main() -> int:
     agent = WebAgent(lattice=lattice, policy=policy, llm=llm, tools=tools)
 
     user_prompt = "Summarize the main points."
-    user_label = make_label("Confidential", ["PII"])
+    # user_label = make_label("Confidential", ["PII"])
+    # user_label = make_label("Public")
+    # user_label = make_label("Internal")
+    # user_label = make_label("Confidential")
+    user_label = make_label("Secret")
+
+
+
 
     try:
         result = agent.run(user_prompt, user_label, urls)

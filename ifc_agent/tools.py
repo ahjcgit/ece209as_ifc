@@ -33,6 +33,7 @@ class AgentTools:
         blocked_domains: Iterable[str] | None = None,
         user_agent: str = "IFC-Agent/0.2",
     ) -> None:
+        self._lattice = lattice
         self._scraper = WebScraper(user_agent=user_agent)
         self._parser = TrustParser(
             trusted_domains=trusted_domains,
@@ -49,14 +50,43 @@ class AgentTools:
         stored: list[ScrapeStoreResult] = []
         for url in urls:
             content = self._scraper.scrape(url)
-            assessment = self._parser.assess(url, content.clean_text, content.raw_html)
+
+            assessment = self._parser.assess(
+                url,
+                content.clean_text,
+                content.raw_html,
+            )
+
+            final_level = assessment.label.level
+            final_categories = set(assessment.label.categories)
+
             if scrape_label is not None:
-                assessment = TrustAssessment(
-                    score=assessment.score,
-                    label=scrape_label,
-                    signals=assessment.signals,
+                if scrape_label.level not in self._lattice._rank:
+                    raise ValueError(f"Unknown scrape label level: {scrape_label.level}")
+
+                final_level = self._lattice.join_level(
+                    final_level,
+                    scrape_label.level,
                 )
-            document, trust = self._storage.store_document(content, assessment)
+
+                final_categories.update(scrape_label.categories)
+
+            final_label = Label(
+                level=final_level,
+                categories=frozenset(final_categories),
+            )
+
+            safe_assessment = TrustAssessment(
+                score=assessment.score,
+                label=final_label,
+                signals=assessment.signals,
+            )
+
+            document, trust = self._storage.store_document(
+                content,
+                safe_assessment,
+            )
+
             stored.append(
                 ScrapeStoreResult(
                     document_id=document.id,

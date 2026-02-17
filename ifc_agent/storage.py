@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
+from hashlib import sha256
 
 from .labels import Label, make_label
 from .parser import TrustAssessment
@@ -32,40 +33,84 @@ class JSONStorage:
         self._path = Path(path)
         self._ensure_file()
 
-    def store_document(self, content: ScrapedContent, assessment: TrustAssessment) -> tuple[Document, StoredTrustAssessment]:
+    def _content_hash(self, text: str) -> str:
+        return sha256(text.encode("utf-8")).hexdigest()
+
+    def store_document(
+        self, content: ScrapedContent, assessment: TrustAssessment
+    ) -> tuple[Document, StoredTrustAssessment]:
         payload = self._load()
-        document = Document(
-            id=str(uuid4()),
+        new_hash = self._content_hash(content.clean_text)
+
+        # Check for duplicate by URL or content hash
+        for i, doc in enumerate(payload["documents"]):
+            existing_hash = self._content_hash(doc["clean_text"])
+            if doc["url"] == content.url or existing_hash == new_hash:
+                # Update existing document
+                payload["documents"][i] = {
+                    "id": doc["id"],
+                    "url": content.url,
+                    "fetched_at": content.fetched_at,
+                    "raw_html": content.raw_html,
+                    "clean_text": content.clean_text,
+                }
+                # Update trust assessment
+                for j, ta in enumerate(payload["trust_assessments"]):
+                    if ta["document_id"] == doc["id"]:
+                        payload["trust_assessments"][j] = {
+                            "document_id": doc["id"],
+                            "score": assessment.score,
+                            "label": {"level": assessment.label.level, "categories": sorted(assessment.label.categories)},
+                            "signals": assessment.signals,
+                        }
+                        break
+                self._save(payload)
+                stored_doc = Document(
+                    id=doc["id"],
+                    url=content.url,
+                    fetched_at=content.fetched_at,
+                    raw_html=content.raw_html,
+                    clean_text=content.clean_text,
+                )
+                stored_trust = StoredTrustAssessment(
+                    document_id=doc["id"],
+                    score=assessment.score,
+                    label=assessment.label,
+                    signals=assessment.signals,
+                )
+                return stored_doc, stored_trust
+
+        # New document
+        doc_id = str(uuid4())
+        payload["documents"].append({
+            "id": doc_id,
+            "url": content.url,
+            "fetched_at": content.fetched_at,
+            "raw_html": content.raw_html,
+            "clean_text": content.clean_text,
+        })
+        payload["trust_assessments"].append({
+            "document_id": doc_id,
+            "score": assessment.score,
+            "label": {"level": assessment.label.level, "categories": sorted(assessment.label.categories)},
+            "signals": assessment.signals,
+        })
+        self._save(payload)
+
+        stored_doc = Document(
+            id=doc_id,
             url=content.url,
             fetched_at=content.fetched_at,
             raw_html=content.raw_html,
             clean_text=content.clean_text,
         )
-        trust = StoredTrustAssessment(
-            document_id=document.id,
+        stored_trust = StoredTrustAssessment(
+            document_id=doc_id,
             score=assessment.score,
             label=assessment.label,
             signals=assessment.signals,
         )
-        payload["documents"].append(
-            {
-                "id": document.id,
-                "url": document.url,
-                "fetched_at": document.fetched_at,
-                "raw_html": document.raw_html,
-                "clean_text": document.clean_text,
-            }
-        )
-        payload["trust_assessments"].append(
-            {
-                "document_id": trust.document_id,
-                "score": trust.score,
-                "label": {"level": trust.label.level, "categories": sorted(trust.label.categories)},
-                "signals": trust.signals,
-            }
-        )
-        self._save(payload)
-        return document, trust
+        return stored_doc, stored_trust
 
     def load_documents(self) -> list[Document]:
         payload = self._load()

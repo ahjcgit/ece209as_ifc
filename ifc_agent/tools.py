@@ -48,6 +48,10 @@ class AgentTools:
         scrape_label: Label | None = None,
     ) -> list[ScrapeStoreResult]:
         stored: list[ScrapeStoreResult] = []
+
+        if scrape_label and not self._lattice.is_valid_level(scrape_label.level):
+            raise ValueError(f"Unknown scrape label level: {scrape_label.level}")
+
         for url in urls:
             content = self._scraper.scrape(url)
 
@@ -61,14 +65,10 @@ class AgentTools:
             final_categories = set(assessment.label.categories)
 
             if scrape_label is not None:
-                if scrape_label.level not in self._lattice._rank:
-                    raise ValueError(f"Unknown scrape label level: {scrape_label.level}")
-
                 final_level = self._lattice.join_level(
                     final_level,
                     scrape_label.level,
                 )
-
                 final_categories.update(scrape_label.categories)
 
             final_label = Label(

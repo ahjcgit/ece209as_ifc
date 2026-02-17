@@ -50,3 +50,5 @@ def join_labels(lattice: Lattice, labels: Iterable[Label]) -> Label:
         level = lattice.join_level(level, other)
     return Label(level=level, categories=frozenset(categories))
 
+def is_valid_level(self, level: str) -> bool:
+    return level in self._rank

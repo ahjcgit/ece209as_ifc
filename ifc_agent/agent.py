@@ -35,15 +35,19 @@ class WebAgent:
         urls: Iterable[str],
         scrape_label: Label | None = None,
     ) -> AgentResult:
+       
         scrape_label = scrape_label or make_label(user_label.level, user_label.categories)
+       
         self._tools.scrape_parse_store(
             urls=urls,
             scrape_label=scrape_label,
         )
+        print(f"[INFO] Starting retrieval for user prompt: {user_prompt}")
         retrieved: RetrieveResult = self._tools.retrieve_by_query(
             query=user_prompt,
             label_cap=user_label,
         )
+       
         if not retrieved.documents:
             return AgentResult(
                 text="No relevant or authorized documents were found for this query.",
@@ -55,12 +59,11 @@ class WebAgent:
             [user_label] + [doc.label for doc in retrieved.documents],
         )
         summary_prompt = self._build_prompt(user_prompt, retrieved)
-
+       
         if self._llm.is_external:
             decision = self._policy.can_send_to_external_llm(combined_label)
             if not decision.allowed:
                 raise PermissionError(decision.reason)
-
         llm_response: LLMResponse = self._llm.generate(summary_prompt, combined_label)
 
         decision = self._policy.can_send_to_user(llm_response.label)

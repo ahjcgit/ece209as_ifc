@@ -31,7 +31,10 @@ class Lattice:
             self._rank[src.level] <= self._rank[dst.level]
             and src.categories.issubset(dst.categories)
         )
-
+    # For validation purposes.
+    def is_valid_level(self, level: str) -> bool:
+        return level in self._rank
+    
 
 def make_label(level: str, categories: Iterable[str] | None = None) -> Label:
     return Label(level=level, categories=frozenset(categories or []))

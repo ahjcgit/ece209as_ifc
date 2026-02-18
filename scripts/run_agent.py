@@ -75,17 +75,15 @@ def main() -> int:
         blocked_domains=tool_cfg.get("blocked_domains", []),
         user_agent=tool_cfg.get("user_agent", "IFC-Agent/0.2"),
     )
-
+    
     agent = WebAgent(lattice=lattice, policy=policy, llm=llm, tools=tools)
-
+ 
     user_prompt = "Summarize the main points."
     # user_label = make_label("Confidential", ["PII"])
     # user_label = make_label("Public")
     # user_label = make_label("Internal")
     # user_label = make_label("Confidential")
     user_label = make_label("Secret")
-
-
 
 
     try:

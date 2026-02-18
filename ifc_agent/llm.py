@@ -44,8 +44,14 @@ class OllamaLLM(BaseLLM):
             headers={"Content-Type": "application/json"},
             method="POST",
         )
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            body = json.loads(resp.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                body = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode("utf-8")
+            print(f"[ERROR] Ollama HTTP error: {e.code} - {error_body}")
+            raise RuntimeError(f"Ollama API error: {e.code} - {error_body}") from e
+        
         return LLMResponse(text=body.get("response", ""), label=label)
 
 

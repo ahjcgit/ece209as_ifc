@@ -47,11 +47,12 @@ class AgentTools:
         urls: Iterable[str],
         scrape_label: Label | None = None,
     ) -> list[ScrapeStoreResult]:
+        
         stored: list[ScrapeStoreResult] = []
-
+        
         if scrape_label and not self._lattice.is_valid_level(scrape_label.level):
             raise ValueError(f"Unknown scrape label level: {scrape_label.level}")
-
+        
         for url in urls:
             content = self._scraper.scrape(url)
 

@@ -42,7 +42,7 @@ class WebAgent:
             urls=urls,
             scrape_label=scrape_label,
         )
-        print(f"[INFO] Starting retrieval for user prompt: {user_prompt}")
+       
         retrieved: RetrieveResult = self._tools.retrieve_by_query(
             query=user_prompt,
             label_cap=user_label,

@@ -3,8 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from playwright.sync_api import sync_playwright
-
 
 @dataclass(frozen=True)
 class ScrapedContent:
@@ -19,6 +17,10 @@ class WebScraper:
 
     def scrape(self, url: str) -> ScrapedContent:
         try:
+            # Import lazily so unit tests that replace the scraper can run
+            # without requiring Playwright in the environment.
+            from playwright.sync_api import sync_playwright
+
             with sync_playwright() as p:
                 browser = p.chromium.launch(headless=False)
                 context = browser.new_context(user_agent=self._user_agent)
@@ -32,6 +34,10 @@ class WebScraper:
 
                 browser.close()
 
+        except ModuleNotFoundError as e:
+            raise RuntimeError(
+                "Playwright is required for scraping. Install it with 'pip install playwright'."
+            ) from e
         except Exception as e:
             raise RuntimeError(f"Failed to scrape {url}: {e}")
 

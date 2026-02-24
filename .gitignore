@@ -1,3 +1,8 @@
-./__pycache__*
-./*/__pycache__*
-./test_results.json
+__pycache__/
+*/__pycache__/
+*.py[cod]
+
+test_results.json
+pipeline_test_logs.txt
+ifc_window_test_logs.txt
+all_pipeline_logs.txt

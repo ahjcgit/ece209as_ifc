@@ -1,4 +1,5 @@
 {
+  "llm_backend": "local",
   "lattice": ["Public", "Internal", "Confidential", "Secret"],
   "user_output_max": {
     "level": "Confidential",

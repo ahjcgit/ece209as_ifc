@@ -34,7 +34,7 @@ class Lattice:
     # For validation purposes.
     def is_valid_level(self, level: str) -> bool:
         return level in self._rank
-    
+
 
 def make_label(level: str, categories: Iterable[str] | None = None) -> Label:
     return Label(level=level, categories=frozenset(categories or []))
@@ -52,6 +52,3 @@ def join_labels(lattice: Lattice, labels: Iterable[Label]) -> Label:
     for other in levels[1:]:
         level = lattice.join_level(level, other)
     return Label(level=level, categories=frozenset(categories))
-
-def is_valid_level(self, level: str) -> bool:
-    return level in self._rank

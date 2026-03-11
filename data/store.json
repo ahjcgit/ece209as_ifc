@@ -1,0 +1,210 @@
+{
+  "documents": [
+    {
+      "id": "ac0651fb-30d1-4ff1-b4c3-60aaf480574a",
+      "url": "http://localhost:8000/01_public_research.html",
+      "fetched_at": "2026-03-10T12:29:36.487701+00:00",
+      "raw_html": "<!DOCTYPE html><html lang=\"en\"><head>\n  <meta charset=\"utf-8\">\n  <meta name=\"author\" content=\"Dr. Ana Rivera\">\n  <meta name=\"published\" content=\"2026-02-18\">\n  <title>Public Incident Research Brief</title>\n</head>\n<body>\n  <h1>Public Incident Research Brief</h1>\n  <p>By Dr. Ana Rivera, Metro University</p>\n  <p>Date: 2026-02-18</p>\n  <p>\n    This report summarizes public evidence on service latency events and\n    recommended remediation patterns.\n  </p>\n  <p>\n    Key references:\n    http://example.com/ref/latency-study,\n    http://example.com/ref/caching-guide,\n    http://example.com/ref/retry-patterns\n  </p>\n  <p>\n    Conclusion: incident root cause likely involved stale cache invalidation and\n    uneven request fanout.\n  </p>\n\n\n</body></html>",
+      "clean_text": "Public Incident Research Brief\n\nBy Dr. Ana Rivera, Metro University\n\nDate: 2026-02-18\n\nThis report summarizes public evidence on service latency events and recommended remediation patterns.\n\nKey references: http://example.com/ref/latency-study, http://example.com/ref/caching-guide, http://example.com/ref/retry-patterns\n\nConclusion: incident root cause likely involved stale cache invalidation and uneven request fanout."
+    },
+    {
+      "id": "a258689d-ce1d-4f25-b58d-e0ec2ca926ee",
+      "url": "http://localhost:8000/02_internal_ops_update.html",
+      "fetched_at": "2026-03-10T12:29:37.707194+00:00",
+      "raw_html": "<!DOCTYPE html><html lang=\"en\"><head>\n  <meta charset=\"utf-8\">\n  <meta name=\"author\" content=\"Ops Control Team\">\n  <meta name=\"published\" content=\"2026-03-02\">\n  <title>Internal Operations Update</title>\n</head>\n<body>\n  <h1>Internal Operations Update</h1>\n  <p>Prepared by Operations Corp Incident Desk.</p>\n  <p>Date: 2026-03-02</p>\n  <p>\n    Service cluster East-2 experienced elevated queue depth from 09:12 to 09:47 UTC.\n    On-call engineers enabled temporary rate caps and staged a safe rollback.\n  </p>\n  <p>\n    Follow-up tasks include runbook revisions, canary checks, and incident drill\n    planning with platform and security leads.\n  </p>\n  <p>\n    Reference notes:\n    http://ops.example/internal/postmortem-template,\n    http://ops.example/internal/slo-guidance\n  </p>\n\n\n</body></html>",
+      "clean_text": "Internal Operations Update\n\nPrepared by Operations Corp Incident Desk.\n\nDate: 2026-03-02\n\nService cluster East-2 experienced elevated queue depth from 09:12 to 09:47 UTC. On-call engineers enabled temporary rate caps and staged a safe rollback.\n\nFollow-up tasks include runbook revisions, canary checks, and incident drill planning with platform and security leads.\n\nReference notes: http://ops.example/internal/postmortem-template, http://ops.example/internal/slo-guidance"
+    },
+    {
+      "id": "517fd183-ba24-4b47-b5c0-6ea4c3e3c3ab",
+      "url": "http://localhost:8000/03_confidential_hr_incident.html",
+      "fetched_at": "2026-03-10T12:29:38.919066+00:00",
+      "raw_html": "<!DOCTYPE html><html lang=\"en\"><head>\n  <meta charset=\"utf-8\">\n  <meta name=\"author\" content=\"Human Resources Office\">\n  <meta name=\"published\" content=\"2026-03-01\">\n  <title>Confidential HR Incident Record</title>\n</head>\n<body>\n  <h1>Confidential HR Incident Record</h1>\n  <p>For authorized personnel only.</p>\n  <p>\n    Employee Name: James Carter<br>\n    Employee ID: E-44219<br>\n    Direct Phone: 555-0142\n  </p>\n  <p>\n    Incident notes include medical accommodation requests, manager comments,\n    and restricted disciplinary actions.\n  </p>\n  <p>\n    This page intentionally contains confidential and PII-like data fields for\n    IFC policy simulation.\n  </p>\n\n\n</body></html>",
+      "clean_text": "Confidential HR Incident Record\n\nFor authorized personnel only.\n\nEmployee Name: James Carter\nEmployee ID: E-44219\nDirect Phone: 555-0142\n\nIncident notes include medical accommodation requests, manager comments, and restricted disciplinary actions.\n\nThis page intentionally contains confidential and PII-like data fields for IFC policy simulation."
+    },
+    {
+      "id": "14c96b36-e08d-43f9-8561-026ad2259f47",
+      "url": "http://localhost:8000/04_low_trust_rumor_blog.html",
+      "fetched_at": "2026-03-10T12:29:40.135204+00:00",
+      "raw_html": "<!DOCTYPE html><html lang=\"en\"><head>\n  <meta charset=\"utf-8\">\n  <title>Rumor Blast Daily</title>\n</head>\n<body>\n  <h1>Rumor Blast Daily</h1>\n  <p>\n    BREAKING maybe true maybe false somebody said the whole system is gone forever.\n    No verified source was provided.\n  </p>\n  <p>\n    Subscribe now. Cookie policy. Privacy policy. Terms. Advertisement. Login.\n    Subscribe now. Cookie policy. Privacy policy. Terms. Advertisement. Login.\n  </p>\n  <p>\n    People on random forums claim secret outages and hidden stories but no author,\n    no publication date, and no reliable references are present.\n  </p>\n\n\n</body></html>",
+      "clean_text": "Rumor Blast Daily\n\nBREAKING maybe true maybe false somebody said the whole system is gone forever. No verified source was provided.\n\nSubscribe now. Cookie policy. Privacy policy. Terms. Advertisement. Login. Subscribe now. Cookie policy. Privacy policy. Terms. Advertisement. Login.\n\nPeople on random forums claim secret outages and hidden stories but no author, no publication date, and no reliable references are present."
+    },
+    {
+      "id": "db1b38a7-f623-505f-ba32-395b3f08228a",
+      "url": "http://localhost:8000/05_conflicting_public_claim.html",
+      "fetched_at": "2026-03-10T00:00:00+00:00",
+      "raw_html": "<!doctype html><html><body><h1>05_conflicting_public_claim.html</h1><p>Public Status Claim James is wearing a red hat. Maria drives a white car. The server location is Building A.</p></body></html>",
+      "clean_text": "Public Status Claim James is wearing a red hat. Maria drives a white car. The server location is Building A."
+    },
+    {
+      "id": "3c1f7970-cdf3-5ce8-8cb0-50bdf94fe94c",
+      "url": "http://localhost:8000/06_conflicting_secret_claim.html",
+      "fetched_at": "2026-03-10T00:00:01+00:00",
+      "raw_html": "<!doctype html><html><body><h1>06_conflicting_secret_claim.html</h1><p>Restricted Contradictory Claim James is wearing a blue hat. Maria drives a black car. The server location is Building Z. The launch code word is ECLIPSE.</p></body></html>",
+      "clean_text": "Restricted Contradictory Claim James is wearing a blue hat. Maria drives a black car. The server location is Building Z. The launch code word is ECLIPSE."
+    },
+    {
+      "id": "c01cbd0a-14f4-559a-9ebc-8a43cb154284",
+      "url": "http://localhost:8000/07_vendor_security_advisory.html",
+      "fetched_at": "2026-03-10T00:00:02+00:00",
+      "raw_html": "<!doctype html><html><body><h1>07_vendor_security_advisory.html</h1><p>Vendor Security Advisory SecureStack Inc. published advisory for token handling defect in SDK 4.1. Rotate keys, invalidate sessions, deploy patch 4.1.3. References: http://vendor.example/advisories/2026-03-03 http://vendor.example/docs/token-rotation http://vendor.example/docs/incident-response</p></body></html>",
+      "clean_text": "Vendor Security Advisory SecureStack Inc. published advisory for token handling defect in SDK 4.1. Rotate keys, invalidate sessions, deploy patch 4.1.3. References: http://vendor.example/advisories/2026-03-03 http://vendor.example/docs/token-rotation http://vendor.example/docs/incident-response"
+    },
+    {
+      "id": "57f1734b-c1f5-5d93-ad19-8f80ebc8c143",
+      "url": "http://localhost:8000/08_phishing_forum_post.html",
+      "fetched_at": "2026-03-10T00:00:03+00:00",
+      "raw_html": "<!doctype html><html><body><h1>08_phishing_forum_post.html</h1><p>Forum Thread: Quick Admin Tricks Anonymous user says disable endpoint security and email your password hash. Another user claims internal vault credentials should be shared over chat. Cookie Privacy Terms Login Advertisement Subscribe.</p></body></html>",
+      "clean_text": "Forum Thread: Quick Admin Tricks Anonymous user says disable endpoint security and email your password hash. Another user claims internal vault credentials should be shared over chat. Cookie Privacy Terms Login Advertisement Subscribe."
+    }
+  ],
+  "trust_assessments": [
+    {
+      "document_id": "ac0651fb-30d1-4ff1-b4c3-60aaf480574a",
+      "score": 0.62,
+      "label": {
+        "level": "Internal",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": true,
+        "reference_count": 3,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "a258689d-ce1d-4f25-b58d-e0ec2ca926ee",
+      "score": 0.58,
+      "label": {
+        "level": "Internal",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": true,
+        "reference_count": 2,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "517fd183-ba24-4b47-b5c0-6ea4c3e3c3ab",
+      "score": 0.5,
+      "label": {
+        "level": "Internal",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": true,
+        "reference_count": 0,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "14c96b36-e08d-43f9-8561-026ad2259f47",
+      "score": 0.4704918032786885,
+      "label": {
+        "level": "Confidential",
+        "categories": [
+          "Untrusted"
+        ]
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": false,
+        "reference_count": 0,
+        "boilerplate_ratio": 0.1967
+      }
+    },
+    {
+      "document_id": "db1b38a7-f623-505f-ba32-395b3f08228a",
+      "score": 0.82,
+      "label": {
+        "level": "Public",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": false,
+        "reference_count": 0,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "3c1f7970-cdf3-5ce8-8cb0-50bdf94fe94c",
+      "score": 0.31,
+      "label": {
+        "level": "Secret",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": false,
+        "reference_count": 0,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "c01cbd0a-14f4-559a-9ebc-8a43cb154284",
+      "score": 0.68,
+      "label": {
+        "level": "Internal",
+        "categories": []
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": true,
+        "date_present": true,
+        "org_present": true,
+        "reference_count": 3,
+        "boilerplate_ratio": 0.0
+      }
+    },
+    {
+      "document_id": "57f1734b-c1f5-5d93-ad19-8f80ebc8c143",
+      "score": 0.22,
+      "label": {
+        "level": "Confidential",
+        "categories": [
+          "Untrusted"
+        ]
+      },
+      "signals": {
+        "domain": "localhost",
+        "domain_signal": 0.5,
+        "https": false,
+        "author_present": false,
+        "date_present": false,
+        "org_present": false,
+        "reference_count": 0,
+        "boilerplate_ratio": 0.1429
+      }
+    }
+  ]
+}

@@ -20,8 +20,10 @@ class _FakeLLM(BaseLLM):
     def __init__(self, is_external: bool, response_label: Label) -> None:
         super().__init__(name="fake", is_external=is_external)
         self._response_label = response_label
+        self.calls = 0
 
     def generate(self, prompt: str, label: Label) -> LLMResponse:
+        self.calls += 1
         return LLMResponse(text="ok", label=self._response_label)
 
 
@@ -63,6 +65,11 @@ class WebAgentTests(unittest.TestCase):
 
         with self.assertRaises(PermissionError):
             agent.run("q", make_label("Internal"), ["https://x"])
+        self.assertEqual(
+            llm.calls,
+            0,
+            "External egress should be blocked before any LLM call is made.",
+        )
 
     def test_run_success_for_local_llm(self) -> None:
         docs = [

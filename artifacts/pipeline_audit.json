@@ -1,0 +1,15 @@
+{
+  "backend_mode": "local",
+  "llm_name": "ollama:qwen2.5:7b-instruct",
+  "result_label": "Internal",
+  "result_text": "No relevant or authorized documents were found for this query.",
+  "audit": {
+    "user_prompt": "Summarize the main points.",
+    "user_label": "Internal",
+    "input_urls": [
+      "https://youtube.com"
+    ],
+    "scrape_label": "Internal",
+    "retrieved_documents": []
+  }
+}

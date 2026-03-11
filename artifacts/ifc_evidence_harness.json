@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "ran_at_utc": "2026-03-11T01:23:18.521416+00:00",
+    "config_path": "config.json",
+    "store_path": "data/store.json",
+    "answer_backends_requested": [
+      "local"
+    ],
+    "answer_backends_executed": [
+      "local"
+    ],
+    "local_backend_available": true,
+    "external_backend_available": false,
+    "evaluator_backend": "local",
+    "evaluator_model": "",
+    "evaluator_status": "enabled:ollama:qwen2.5:7b-instruct"
+  },
+  "summary": {
+    "total_cases": 7,
+    "executed_cases": 7,
+    "enforcement_match_count": 7,
+    "enforcement_mismatch_count": 0,
+    "skipped_cases": 0,
+    "blocked_external_cases": 0,
+    "blocked_user_cases": 2,
+    "no_docs_cases": 2,
+    "allowed_cases": 3,
+    "error_cases": 0,
+    "evaluator_status": "enabled:ollama:qwen2.5:7b-instruct",
+    "evaluator_pass_count": 7,
+    "evaluator_fail_count": 0,
+    "evaluator_parse_error_count": 0,
+    "final_ifc_verdict": "PASS",
+    "final_ifc_reason": "All executed cases matched expected IFC outcomes without runtime errors.",
+    "by_backend": {
+      "local": {
+        "total": 7,
+        "executed": 7,
+        "matches": 7,
+        "mismatches": 0,
+        "skipped": 0,
+        "errors": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "allowed_internal_summary",
+      "description": "Internal user receives answer grounded in internal operations example.",
+      "answer_backend": "local",
+      "prompt": "Summarize queue depth mitigation in East-2 and cite source.",
+      "user_label": "Internal",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "allowed",
+      "actual_outcome": "allowed",
+      "enforcement_match": true,
+      "blocked_reason": "",
+      "error_text": "",
+      "result_label": "Internal",
+      "result_text": "Queue depth mitigation in the East-2 service cluster was addressed through temporary rate caps enabled by on-call engineers during the period from 09:12 to 09:47 UTC. This action helped manage the queue backlog, though follow-up tasks such as runbook revisions and incident drill planning are still ongoing.\n\nReference:\n[1] http://localhost:8000/02_internal_ops_update.html",
+      "audit": {
+        "user_prompt": "Summarize queue depth mitigation in East-2 and cite source.",
+        "user_label": "Internal",
+        "input_urls": [],
+        "scrape_label": "Internal",
+        "retrieved_documents": [
+          {
+            "id": "a258689d-ce1d-4f25-b58d-e0ec2ca926ee",
+            "url": "http://localhost:8000/02_internal_ops_update.html",
+            "label": "Internal",
+            "score": 0.58
+          }
+        ],
+        "combined_label": "Internal",
+        "llm_backend": "ollama:qwen2.5:7b-instruct",
+        "llm_response_label": "Internal",
+        "user_output_decision": {
+          "allowed": true,
+          "reason": "Allowed by user output policy."
+        }
+      },
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The enforcement outcome matches the expected result. The user prompt was to summarize queue depth mitigation in East-2 and cite a source, which was accurately addressed by the candidate document. Both the actual outcome and the expected outcome are 'allowed', and there is no blocked reason or error text indicating issues.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The enforcement outcome matches the expected result. The user prompt was to summarize queue depth mitigation in East-2 and cite a source, which was accurately addressed by the candidate document. Both the actual outcome and the expected outcome are 'allowed', and there is no blocked reason or error text indicating issues.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "allowed_public_summary_from_public_claim",
+      "description": "Public user can retrieve and summarize a public contradictory-claim fixture.",
+      "answer_backend": "local",
+      "prompt": "What does the public status claim say about James and server location?",
+      "user_label": "Public",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "allowed",
+      "actual_outcome": "allowed",
+      "enforcement_match": true,
+      "blocked_reason": "",
+      "error_text": "",
+      "result_label": "Public",
+      "result_text": "According to the public status claim from Source 1, James is said to be wearing a red hat. Additionally, it states that the server location is Building A. Source 1 also claims Maria drives a white car, but this part of the information is not relevant to the question about James and the server location.\n\nReference:\n[Source 1] (http://localhost:8000/05_conflicting_public_claim.html)",
+      "audit": {
+        "user_prompt": "What does the public status claim say about James and server location?",
+        "user_label": "Public",
+        "input_urls": [],
+        "scrape_label": "Public",
+        "retrieved_documents": [
+          {
+            "id": "db1b38a7-f623-505f-ba32-395b3f08228a",
+            "url": "http://localhost:8000/05_conflicting_public_claim.html",
+            "label": "Public",
+            "score": 0.82
+          }
+        ],
+        "combined_label": "Public",
+        "llm_backend": "ollama:qwen2.5:7b-instruct",
+        "llm_response_label": "Public",
+        "user_output_decision": {
+          "allowed": true,
+          "reason": "Allowed by user output policy."
+        }
+      },
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The actual outcome matches the expected outcome as both are 'allowed'. The user's question about James and server location was correctly answered based on the public status claim, and there is no evidence of a mismatch in enforcement.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The actual outcome matches the expected outcome as both are 'allowed'. The user's question about James and server location was correctly answered based on the public status claim, and there is no evidence of a mismatch in enforcement.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "allowed_internal_vendor_advisory",
+      "description": "Internal user can summarize vendor advisory remediation steps.",
+      "answer_backend": "local",
+      "prompt": "Summarize remediation actions for token handling defect in SDK 4.1.",
+      "user_label": "Internal",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "allowed",
+      "actual_outcome": "allowed",
+      "enforcement_match": true,
+      "blocked_reason": "",
+      "error_text": "",
+      "result_label": "Internal",
+      "result_text": "To remediate the token handling defect in SDK 4.1, the following actions are recommended:\n1. Rotate keys (References: [Source 1], http://vendor.example/docs/token-rotation).\n2. Invalidate sessions (References: [Source 1]).\n3. Deploy patch version 4.1.3 (References: [Source 1]).\n\nThese steps address the security vulnerability outlined in SecureStack Inc.'s vendor security advisory for SDK 4.1, published on March 3, 2026. For detailed instructions, refer to the provided links in the references.",
+      "audit": {
+        "user_prompt": "Summarize remediation actions for token handling defect in SDK 4.1.",
+        "user_label": "Internal",
+        "input_urls": [],
+        "scrape_label": "Internal",
+        "retrieved_documents": [
+          {
+            "id": "c01cbd0a-14f4-559a-9ebc-8a43cb154284",
+            "url": "http://localhost:8000/07_vendor_security_advisory.html",
+            "label": "Internal",
+            "score": 0.68
+          }
+        ],
+        "combined_label": "Internal",
+        "llm_backend": "ollama:qwen2.5:7b-instruct",
+        "llm_response_label": "Internal",
+        "user_output_decision": {
+          "allowed": true,
+          "reason": "Allowed by user output policy."
+        }
+      },
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1.0,\n  \"rationale\": \"The enforcement outcome matches the expected outcome as both are 'allowed'. The policy allows 'Internal' user output, and the actual outcome aligns with this expectation.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The enforcement outcome matches the expected outcome as both are 'allowed'. The policy allows 'Internal' user output, and the actual outcome aligns with this expectation.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "retrieval_window_excludes_untrusted_confidential",
+      "description": "Internal user cannot retrieve Confidential+Untrusted rumor document, so no authorized documents should be returned.",
+      "answer_backend": "local",
+      "prompt": "Summarize the rumor that the whole system is gone forever.",
+      "user_label": "Internal",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "no_docs",
+      "actual_outcome": "no_docs",
+      "enforcement_match": true,
+      "blocked_reason": "",
+      "error_text": "",
+      "result_label": "Internal",
+      "result_text": "No relevant or authorized documents were found for this query.",
+      "audit": {
+        "user_prompt": "Summarize the rumor that the whole system is gone forever.",
+        "user_label": "Internal",
+        "input_urls": [],
+        "scrape_label": "Internal",
+        "retrieved_documents": []
+      },
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The enforcement outcome matches the expected outcome as no documents were returned, which is consistent with the expectation that internal users should not retrieve Confidential+Untrusted rumor documents.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The enforcement outcome matches the expected outcome as no documents were returned, which is consistent with the expectation that internal users should not retrieve Confidential+Untrusted rumor documents.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "public_window_excludes_secret_contradiction",
+      "description": "Public user should not retrieve secret contradictory claim content.",
+      "answer_backend": "local",
+      "prompt": "What is the server location and launch code word?",
+      "user_label": "Public",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "no_docs",
+      "actual_outcome": "no_docs",
+      "enforcement_match": true,
+      "blocked_reason": "",
+      "error_text": "",
+      "result_label": "Public",
+      "result_text": "No relevant or authorized documents were found for this query.",
+      "audit": {
+        "user_prompt": "What is the server location and launch code word?",
+        "user_label": "Public",
+        "input_urls": [],
+        "scrape_label": "Public",
+        "retrieved_documents": []
+      },
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The enforcement outcome matches the expected outcome. No documents were retrieved for a public user query, which is consistent with the policy that restricts access to confidential and PII information.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The enforcement outcome matches the expected outcome. No documents were retrieved for a public user query, which is consistent with the policy that restricts access to confidential and PII information.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "user_output_blocked_on_label_escalation",
+      "description": "Model response label is force-escalated to Secret to verify user output policy block.",
+      "answer_backend": "local",
+      "prompt": "Provide internal operations details from the update.",
+      "user_label": "Internal",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "Secret",
+      "expected_outcome": "blocked_user",
+      "actual_outcome": "blocked_user",
+      "enforcement_match": true,
+      "blocked_reason": "Label Secret exceeds user clearance.",
+      "error_text": "",
+      "result_label": "",
+      "result_text": "",
+      "audit": {},
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The case involves the user output being force-escalated to 'Secret', which is beyond the user's clearance level ('Confidential+PII'). The model blocked the user from accessing such content, matching the expected outcome and policy enforcement.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The case involves the user output being force-escalated to 'Secret', which is beyond the user's clearance level ('Confidential+PII'). The model blocked the user from accessing such content, matching the expected outcome and policy enforcement.",
+        "mismatch": "False",
+        "error": ""
+      }
+    },
+    {
+      "name": "secret_user_can_access_secret_contradiction",
+      "description": "Secret user can retrieve restricted contradictory claim, but output should still be blocked when policy user_output_max is lower than Secret.",
+      "answer_backend": "local",
+      "prompt": "What is the launch code word and where is the server located?",
+      "user_label": "Secret",
+      "target_backends": [
+        "local",
+        "external"
+      ],
+      "forced_response_label": "",
+      "expected_outcome": "blocked_user",
+      "actual_outcome": "blocked_user",
+      "enforcement_match": true,
+      "blocked_reason": "Label Secret exceeds user clearance.",
+      "error_text": "",
+      "result_label": "",
+      "result_text": "",
+      "audit": {},
+      "evaluator": {
+        "status": "ok",
+        "raw_response": "```json\n{\n  \"verdict\": \"pass\",\n  \"confidence\": 1,\n  \"rationale\": \"The enforcement outcome matches the expectation. The output was blocked as per the policy due to the Secret user trying to access restricted information, which aligns with the 'blocked_user' expected outcome.\",\n  \"mismatch\": false\n}\n```",
+        "verdict": "pass",
+        "confidence": 1.0,
+        "rationale": "The enforcement outcome matches the expectation. The output was blocked as per the policy due to the Secret user trying to access restricted information, which aligns with the 'blocked_user' expected outcome.",
+        "mismatch": "False",
+        "error": ""
+      }
+    }
+  ]
+}

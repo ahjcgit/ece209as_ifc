@@ -78,6 +78,7 @@ class PipelineWithLogsTests(unittest.TestCase):
             result = agent.run(user_prompt=user_prompt, user_label=user_label, urls=urls)
             print(f"[PIPELINE] Final result label: {result.label}")
             print(f"[PIPELINE] Final result text: {result.text}")
+            print(f"[PIPELINE] Audit keys: {sorted((result.audit or {}).keys())}")
 
             docs = tools._storage.load_documents()
             trusts = tools._storage.load_trust_assessments()
@@ -89,6 +90,10 @@ class PipelineWithLogsTests(unittest.TestCase):
 
             self.assertEqual(result.text, "Synthetic summary answer.")
             self.assertEqual(result.label.level, "Internal")
+            self.assertIsNotNone(result.audit)
+            self.assertEqual(result.audit.get("combined_label"), "Internal")
+            self.assertIn("retrieved_documents", result.audit)
+            self.assertEqual(result.audit.get("llm_backend"), "fake-local")
             self.assertEqual(len(docs), 1)
             self.assertEqual(len(trusts), 1)
 

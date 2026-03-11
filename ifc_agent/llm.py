@@ -49,7 +49,6 @@ class OllamaLLM(BaseLLM):
                 body = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             error_body = e.read().decode("utf-8")
-            print(f"[ERROR] Ollama HTTP error: {e.code} - {error_body}")
             raise RuntimeError(f"Ollama API error: {e.code} - {error_body}") from e
         
         return LLMResponse(text=body.get("response", ""), label=label)
